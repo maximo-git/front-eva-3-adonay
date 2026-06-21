@@ -32,3 +32,18 @@ export interface AuthContextType {
   login: (email: string, password: string) => boolean;
   logout: () => void;
 }
+
+export interface Empleado {
+  id: string;
+  nombre: string;
+  apellido: string;
+  rut: string;
+  email: string;
+  telefono: string;
+  password: string;  
+  rol: 'admin' | 'empleado';
+  cargo: string;
+  fechaIngreso: string;
+  activo: boolean;
+}
+
