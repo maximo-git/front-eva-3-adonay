@@ -5,11 +5,20 @@ const NAV_ITEMS = [
   { to: '/resumen', label: 'Resumen', icon: '▦' },
   { to: '/productos', label: 'Productos', icon: '🍣' },
   { to: '/sedes', label: 'Sedes', icon: '📍' },
+  { to: '/empleados', label: 'Empleados', icon: '👥' },
 ];
 
 export default function Sidebar() {
   const { usuario, logout } = useAuth();
   const navigate = useNavigate();
+  const esAdmin = usuario?.rol === 'admin';
+
+  // Filtrar items según el rol
+  const itemsVisibles = NAV_ITEMS.filter((item) => {
+    if (esAdmin) return true; // Admin ve todo
+    // Empleado solo ve: Resumen, Productos, Sedes, Inventario
+    return ['resumen', 'productos', 'sedes', 'inventario'].some((path) => item.to.includes(path));
+  });
 
   const handleLogout = () => {
     logout();
@@ -29,7 +38,7 @@ export default function Sidebar() {
 
       {/* Navegación */}
       <nav className="sidebar-nav">
-        {NAV_ITEMS.map((item) => (
+        {itemsVisibles.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}
