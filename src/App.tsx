@@ -6,7 +6,9 @@ import Resumen from './pages/Resumen';
 import Productos from './pages/Productos';
 import ProductoDetalle from './pages/ProductoDetalle';
 import Sedes from './pages/Sedes';
-import SedeDetalle from './pages/SedeDetalle';
+import SedeDetalle from './pages/SedeDetalle';  
+import Inventario from "./inventario/Inventario";
+
 import './App.css';
 
 export default function App() {
@@ -23,7 +25,8 @@ export default function App() {
             <Route path="/productos" element={<Productos />} />
             <Route path="/productos/:id" element={<ProductoDetalle />} />
             <Route path="/sedes" element={<Sedes />} />
-            <Route path="/sedes/:id" element={<SedeDetalle />} />
+            <Route path="/sedes/:id" element={<SedeDetalle />} /> 
+            <Route path="/inventario" element={<Inventario />} />
           </Route>
 
           {/* Redireccionamiento por defecto */}
