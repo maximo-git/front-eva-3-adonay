@@ -1,12 +1,22 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import type { AuthContextType, Usuario } from '../types';
+import type { AuthContextType, Usuario, Empleado } from '../types';
 
 // ─── Usuarios válidos (simulados) ────────────────────────────────────────────
 const USUARIOS_VALIDOS: Array<{ email: string; password: string; nombre: string; rol: 'admin' | 'empleado' }> = [
   { email: 'admin@adonay.com', password: 'admin123', nombre: 'Administrador', rol: 'admin' },
   { email: 'empleado@adonay.com', password: 'emp123', nombre: 'Empleado', rol: 'empleado' },
 ];
+
+// Función para obtener empleados desde localStorage
+const getEmpleadosDelStorage = (): Empleado[] => {
+  try {
+    const saved = localStorage.getItem('adonay_empleados');
+    return saved ? JSON.parse(saved) : [];
+  } catch {
+    return [];
+  }
+};
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -36,6 +46,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = (email: string, password: string): boolean => {
+    // Primero intentar con empleados del localStorage
+    const empleados = getEmpleadosDelStorage();
+    const empleadoEncontrado = empleados.find(
+      (e) => e.email === email && e.activo === true
+    );
+
+    if (empleadoEncontrado) {
+      // Si el empleado existe, verificar la contraseña
+      if (password === empleadoEncontrado.password) {
+        const user: Usuario = {
+          email: empleadoEncontrado.email,
+          rol: empleadoEncontrado.rol,
+          nombre: empleadoEncontrado.nombre,
+        };
+        localStorage.setItem('adonay_user', JSON.stringify(user));
+        setUsuario(user);
+        return true;
+      }
+    }
+
+    // Si no hay empleados o no coincide, intentar con USUARIOS_VALIDOS
     const found = USUARIOS_VALIDOS.find(
       (u) => u.email === email && u.password === password
     );
@@ -45,6 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUsuario(user);
       return true;
     }
+
     return false;
   };
 
