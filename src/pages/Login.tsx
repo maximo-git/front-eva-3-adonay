@@ -83,6 +83,17 @@ export default function Login() {
             {loading ? 'Verificando...' : 'Iniciar sesión'}
           </button>
         </form>
+         {/* Link a registro */}
+        <p className="form-footer">
+          ¿No tienes cuenta?{' '}
+          <button
+            type="button"
+            onClick={() => navigate('/registro')}
+            className="form-link"
+          >
+            Regístrate aquí
+          </button>
+        </p>
       </div>
     </div>
   );
