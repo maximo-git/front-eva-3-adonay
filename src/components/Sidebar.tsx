@@ -6,6 +6,8 @@ const NAV_ITEMS = [
   { to: '/productos', label: 'Productos', icon: '🍣' },
   { to: '/sedes', label: 'Sedes', icon: '📍' },
   { to: '/empleados', label: 'Empleados', icon: '👥' },
+  { to: '/sedes', label: 'Sedes', icon: '📍' }, 
+  { to: '/inventario', label: 'Inventario', icon: '📦' },
 ];
 
 export default function Sidebar() {
