@@ -4,7 +4,8 @@ import { useAuth } from '../context/AuthContext';
 const NAV_ITEMS = [
   { to: '/resumen', label: 'Resumen', icon: '▦' },
   { to: '/productos', label: 'Productos', icon: '🍣' },
-  { to: '/sedes', label: 'Sedes', icon: '📍' },
+  { to: '/sedes', label: 'Sedes', icon: '📍' }, 
+  { to: '/inventario', label: 'Inventario', icon: '📦' },
 ];
 
 export default function Sidebar() {
