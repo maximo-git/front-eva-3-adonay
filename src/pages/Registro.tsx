@@ -135,6 +135,7 @@ export default function Registro() {
           rut: form.rut,
           email: form.email,
           telefono: '', // Se puede agregar después
+          password: form.password, 
           rol: 'empleado', // Por defecto, rol empleado
           cargo: 'empleado',
           fechaIngreso: new Date().toISOString().split('T')[0],
@@ -164,7 +165,17 @@ export default function Registro() {
       <div className="login-card">
         {/* Encabezado */}
         <div className="login-header">
-          <span className="login-logo">🍣</span>
+          <img 
+         src="/logo_sushi.jpeg" 
+         alt="Adonay Sushi" 
+         style={{ 
+         width: '90px', 
+         height: '90px', 
+         borderRadius: '30px',
+         display: 'block',
+         margin: '0 auto'
+          }}
+        />
           <h1 className="login-title">Adonay Sushi</h1>
           <p className="login-subtitle">Registro de Empleado</p>
         </div>

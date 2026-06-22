@@ -38,7 +38,17 @@ export default function Login() {
       <div className="login-card">
         {/* Encabezado */}
         <div className="login-header">
-          <span className="login-logo">🍣</span>
+         <img 
+         src="/logo_sushi.jpeg" 
+         alt="Adonay Sushi" 
+         style={{ 
+         width: '90px', 
+         height: '90px', 
+         borderRadius: '30px',
+         display: 'block',
+         margin: '0 auto'
+          }}
+        />
           <h1 className="login-title">Adonay Sushi</h1>
           <p className="login-subtitle">Acceso a la Intranet</p>
         </div>
