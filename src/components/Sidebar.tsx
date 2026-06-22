@@ -30,11 +30,12 @@ export default function Sidebar() {
     <aside className="sidebar">
       {/* Logo */}
       <div className="sidebar-logo">
-        <img 
-         src="logo_adonay.jpeg" 
-         alt="Adonay Sushi" 
-         style={{ width: '50px', height: '50px' }}
-/>
+       <img 
+      src="/logo_sushi.jpeg" 
+      alt="Adonay Sushi" 
+      style={{ width: '80px', height: '80px', borderRadius: '10px' }}
+    />
+
         <div>
           <p className="sidebar-logo-title">Adonay Sushi</p>
           <p className="sidebar-logo-sub">Intranet</p>
