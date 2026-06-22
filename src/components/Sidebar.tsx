@@ -6,7 +6,6 @@ const NAV_ITEMS = [
   { to: '/productos', label: 'Productos', icon: '🍣' },
   { to: '/sedes', label: 'Sedes', icon: '📍' },
   { to: '/empleados', label: 'Empleados', icon: '👥' },
-  { to: '/sedes', label: 'Sedes', icon: '📍' }, 
   { to: '/inventario', label: 'Inventario', icon: '📦' },
 ];
 
@@ -31,7 +30,11 @@ export default function Sidebar() {
     <aside className="sidebar">
       {/* Logo */}
       <div className="sidebar-logo">
-        <span className="sidebar-logo-icon">🍣</span>
+        <img 
+         src="logo_adonay.jpeg" 
+         alt="Adonay Sushi" 
+         style={{ width: '50px', height: '50px' }}
+/>
         <div>
           <p className="sidebar-logo-title">Adonay Sushi</p>
           <p className="sidebar-logo-sub">Intranet</p>
