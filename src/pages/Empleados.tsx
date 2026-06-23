@@ -21,6 +21,7 @@ const VACIO: Omit<Empleado, 'id'> = {
 interface Errores {
   nombre?: string;
   apellido?: string;
+  rut?: string; 
   email?: string;
   telefono?: string;
   password?: string;
@@ -59,6 +60,11 @@ export default function Empleados() {
     return regex.test(phone);
   };
 
+  const validarRUT = (rut: string): boolean => {
+  const regex = /^\d{1,2}\.\d{3}\.\d{3}-[\dkK]$/;
+  return regex.test(rut);
+};
+
   const validar = (): boolean => {
     const errs: Errores = {};
     
@@ -68,6 +74,12 @@ export default function Empleados() {
     
     if (!form.apellido.trim()) {
       errs.apellido = 'El apellido es obligatorio.';
+    }
+
+    if (!form.rut.trim()) {
+      errs.rut = 'El RUT es obligatorio.';
+    } else if (!validarRUT(form.rut)) {
+      errs.rut = 'Formato: 12.345.678-9';
     }
     
     if (!form.email.trim()) {
@@ -262,25 +274,28 @@ const iniciarEdicion = (e: Empleado) => {
             </div>
 
             <div className="form-group">
-              <label className="form-label">Fecha de ingreso</label>
-              <input
-                type="date"
-                className="form-input"
-                value={form.fechaIngreso}
-                onChange={(e) => setForm({ ...form, fechaIngreso: e.target.value })}
-              />
-            </div>
-
-            <div className="form-group">
-                <label className="form-label">RUT *</label>
-               <input
-                 type="text"
-                 className="form-input"
-                 placeholder="Ej: 12.345.678-9"
-                 value={form.rut}
-                 onChange={(e) => setForm({ ...form, rut: e.target.value })}
-               />
-            </div>
+            <label className="form-label">RUT *</label>
+            <input
+              type="text"
+              className={`form-input${errores.rut ? ' form-input--error' : ''}`}
+              placeholder="Ej: 12.345.678-9"
+              value={form.rut}
+              onChange={(e) => {
+               const nuevoRut = e.target.value;
+               setForm({ ...form, rut: nuevoRut });
+      
+      // Validación en tiempo real
+      if (nuevoRut.trim()) {
+        if (!validarRUT(nuevoRut)) {
+          setErrores(prev => ({ ...prev, rut: 'Formato: 12.345.678-9' }));
+        } else {
+          setErrores(prev => ({ ...prev, rut: undefined }));
+        }
+      }
+    }}
+  />
+  {errores.rut && <p className="form-error">{errores.rut}</p>}
+</div>
 
             <div className="form-group">
               <label className="form-label">Estado</label>

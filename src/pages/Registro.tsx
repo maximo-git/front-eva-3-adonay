@@ -221,10 +221,22 @@ export default function Registro() {
               <label className="form-label">RUT (12.345.678-9)</label>
               <input
                 type="text"
-                className="form-input"
+                className={`form-input${errores.rut ? ' form-input--error' : ''}`}
                 placeholder="12.345.678-9"
                 value={form.rut}
-                onChange={(e) => setForm({ ...form, rut: e.target.value })}
+                onChange={(e) => {
+  const nuevoRut = e.target.value;
+  setForm({ ...form, rut: nuevoRut });
+  
+  // Validación en tiempo real
+  if (nuevoRut.trim()) {
+    if (!validarRUT(nuevoRut)) {
+      setErrores(prev => ({ ...prev, rut: 'Formato: 12.345.678-9' }));
+    } else {
+      setErrores(prev => ({ ...prev, rut: undefined }));
+    }
+  }
+}}
               />
               {errores.rut && (
                 <p className="form-error">{errores.rut}</p>
