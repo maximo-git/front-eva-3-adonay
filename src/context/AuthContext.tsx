@@ -8,7 +8,7 @@ const USUARIOS_VALIDOS: Array<{ email: string; password: string; nombre: string;
   { email: 'empleado@adonay.com', password: 'emp123', nombre: 'Empleado', rol: 'empleado' },
 ];
 
-// Función para obtener empleados desde localStorage
+
 const getEmpleadosDelStorage = (): Empleado[] => {
   try {
     const saved = localStorage.getItem('adonay_empleados');
@@ -24,13 +24,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [usuario, setUsuario] = useState<Usuario | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Cargar sesión persistida al montar
+  
   useEffect(() => {
     const saved = localStorage.getItem('adonay_user');
     if (saved) {
       try {
         const parsed = JSON.parse(saved) as Usuario;
-        // Validación extra: si falta el nombre o rol, limpiar para evitar errores
+        
         if (!parsed.nombre || !parsed.rol) {
           localStorage.removeItem('adonay_user');
           setUsuario(null);
@@ -46,14 +46,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = (email: string, password: string): boolean => {
-    // Primero intentar con empleados del localStorage
+    
     const empleados = getEmpleadosDelStorage();
     const empleadoEncontrado = empleados.find(
       (e) => e.email === email && e.activo === true
     );
 
     if (empleadoEncontrado) {
-      // Si el empleado existe, verificar la contraseña
+      
       if (password === empleadoEncontrado.password) {
         const user: Usuario = {
           email: empleadoEncontrado.email,
@@ -66,7 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     }
 
-    // Si no hay empleados o no coincide, intentar con USUARIOS_VALIDOS
+  
     const found = USUARIOS_VALIDOS.find(
       (u) => u.email === email && u.password === password
     );

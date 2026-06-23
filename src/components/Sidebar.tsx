@@ -17,7 +17,7 @@ export default function Sidebar() {
   // Filtrar items según el rol
   const itemsVisibles = NAV_ITEMS.filter((item) => {
     if (esAdmin) return true; // Admin ve todo
-    // Empleado solo ve: Resumen, Productos, Sedes, Inventario
+    
     return ['resumen', 'productos', 'sedes', 'inventario'].some((path) => item.to.includes(path));
   });
 
