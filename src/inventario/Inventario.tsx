@@ -26,16 +26,91 @@ function Inventario() {
   const [indiceEditar, setIndiceEditar] = useState<number | null>(null);
   const [mostrarModal, setMostrarModal] = useState(false);
 
-  // ✅ GUARDAR (solo cuando cambia)
   useEffect(() => {
-    localStorage.setItem(
-      "sushi_ingrediente",
-      JSON.stringify(ingredientes)
-    );
+    localStorage.setItem("sushi_ingrediente", JSON.stringify(ingredientes));
   }, [ingredientes]);
+
+  // 🔥 SISTEMA DE OPCIONES
+  const obtenerOpciones = () => {
+    const n = nombre.toLowerCase();
+
+    if (n.includes("arroz")) {
+      return [
+        "Arroz Graneado",
+        "Arroz Integral",
+        "Grano corto",
+        "Grano largo",
+        "Jazmín",
+        "Basmati",
+        "Precocido",
+      ];
+    }
+
+    if (n.includes("pescado")) {
+      return ["Reineta", "Merluza", "Salmón", "Congrio", "Jurel", "Corvina"];
+    }
+
+    if (n.includes("carne")) {
+      return ["Costillar", "Cerdo", "Pollo", "Filete", "Pavo", "Marinada"];
+    }
+
+    if (n.includes("mariscos")) {
+      return [
+        "Choritos (Meillones)",
+        "Machas",
+        "Almejas",
+        "Locos",
+        "Ostiones",
+        "Choras y Maltones",
+      ];
+    }
+
+    if (n.includes("verduras")) {
+      return [
+        "Tomate",
+        "Cebolla",
+        "Palta",
+        "Lechuga",
+        "Repollo",
+        "Apio",
+        "Zanahoria",
+        "Acelga y Espinaca",
+      ];
+    }
+
+    if (n.includes("salsa")) {
+      return [
+        "Salsa de Soya",
+        "Salsa Teriyaki",
+        "Salsa Unagi",
+        "Salsa Acevichada",
+        "Salsa Ponzu",
+      ];
+    }
+
+    if (n.includes("queso")) {
+      return [
+        "Queso Gauda",
+        "Queso Crema",
+        "Queso parmesano",
+        "Queso Mozzarella",
+        "Quesillo",
+        "Queso mantecoso",
+      ];
+    }
+
+    return ["General", "Premium", "Económico", "Importado"];
+  };
+
+  const opcionesCategoria = obtenerOpciones();
 
   const guardarIngrediente = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!nombre || !categoria || !cantidad || !precio || !stock) {
+      alert("⚠️ Completa todos los campos");
+      return;
+    }
 
     const nuevo: Ingrediente = {
       nombre,
@@ -49,8 +124,10 @@ function Inventario() {
       const copia = [...ingredientes];
       copia[indiceEditar] = nuevo;
       setIngredientes(copia);
+      alert("✅ Ingrediente actualizado");
     } else {
       setIngredientes([...ingredientes, nuevo]);
+      alert("✅ Ingrediente agregado");
     }
 
     cerrarModal();
@@ -71,7 +148,11 @@ function Inventario() {
 
   const eliminarIngrediente = (index: number) => {
     if (!confirm("¿Eliminar ingrediente?")) return;
-    setIngredientes(ingredientes.filter((_, i) => i !== index));
+
+    const nuevaLista = ingredientes.filter((_, i) => i !== index);
+    setIngredientes(nuevaLista);
+
+    alert("🗑️ Eliminado correctamente");
   };
 
   const cerrarModal = () => {
@@ -84,8 +165,10 @@ function Inventario() {
     setMostrarModal(false);
   };
 
-  const ingredientesFiltrados = ingredientes.filter((ing) =>
-    ing.nombre.toLowerCase().includes(busqueda.toLowerCase())
+  const ingredientesFiltrados = ingredientes.filter(
+    (ing) =>
+      ing.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
+      ing.categoria.toLowerCase().includes(busqueda.toLowerCase())
   );
 
   const formatearPrecio = (valor: number) =>
@@ -97,7 +180,6 @@ function Inventario() {
 
   return (
     <div className="inventario-container">
-
       <div className="header">
         <h2>Inventario</h2>
         <button onClick={() => setMostrarModal(true)}>
@@ -122,17 +204,28 @@ function Inventario() {
             <form onSubmit={guardarIngrediente}>
               <input
                 type="text"
-                placeholder="Nombre"
+                placeholder="Nombre (ej: pollo, arroz, salmón...)"
                 value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
+                onChange={(e) => {
+                  setNombre(e.target.value);
+                  setCategoria(""); // 👈 limpia solo al escribir
+                }}
               />
 
-              <input
-                type="text"
-                placeholder="Categoría"
-                value={categoria}
+              <select
+                value={categoria || ""}
                 onChange={(e) => setCategoria(e.target.value)}
-              />
+              >
+                <option value="">Seleccionar tipo</option>
+
+                {[...new Set([categoria, ...opcionesCategoria])]
+                  .filter(Boolean)
+                  .map((op, i) => (
+                    <option key={i} value={op}>
+                      {op}
+                    </option>
+                  ))}
+              </select>
 
               <input
                 type="number"
@@ -176,7 +269,8 @@ function Inventario() {
             <th>Categoría</th>
             <th>Cantidad</th>
             <th>Precio</th>
-            <th>Stock</th>
+            <th>Stock mínimo</th>
+            <th>Estado</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -188,9 +282,14 @@ function Inventario() {
               <td>{ing.categoria}</td>
               <td>{ing.cantidad}</td>
               <td>{formatearPrecio(ing.precio)}</td>
+              <td>{ing.stock}</td>
 
-              <td className={ing.cantidad <= ing.stock ? "stock-bajo" : "stock-ok"}>
-                {ing.stock}
+              <td
+                className={
+                  ing.cantidad <= ing.stock ? "stock-bajo" : "stock-ok"
+                }
+              >
+                {ing.cantidad <= ing.stock ? "⚠️ Bajo" : "✅ OK"}
               </td>
 
               <td>
