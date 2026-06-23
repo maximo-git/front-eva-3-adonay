@@ -99,7 +99,7 @@ function Inventario() {
       ];
     }
 
-    return ["General", "Premium", "Económico", "Importado"];
+    return ["frutas","otros"];
   };
 
   const opcionesCategoria = obtenerOpciones();
