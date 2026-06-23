@@ -137,7 +137,7 @@ const iniciarEdicion = (e: Empleado) => {
       apellido: e.apellido,
       rut: e.rut,
       email: e.email,
-      password: e.password,       // ← AGREGUÉ ESTO
+      password: e.password,       
       telefono: e.telefono,
       rol: e.rol,
       cargo: e.cargo,
@@ -284,7 +284,7 @@ const iniciarEdicion = (e: Empleado) => {
                const nuevoRut = e.target.value;
                setForm({ ...form, rut: nuevoRut });
       
-      // Validación en tiempo real
+      
       if (nuevoRut.trim()) {
         if (!validarRUT(nuevoRut)) {
           setErrores(prev => ({ ...prev, rut: 'Formato: 12.345.678-9' }));

@@ -27,7 +27,7 @@ export default function Registro() {
   const navigate = useNavigate();
   const { usuario } = useAuth();
 
-  // Si ya hay sesión activa, redirigir al resumen
+  
   if (usuario) return <Navigate to="/resumen" replace />;
 
   const [form, setForm] = useState<RegistroForm>({
@@ -44,24 +44,23 @@ export default function Registro() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // ─── Validar RUT (formato: 12.345.678-9) ───
+  
   const validarRUT = (rut: string): boolean => {
     const regex = /^\d{1,2}\.\d{3}\.\d{3}-[\dkK]$/;
     return regex.test(rut);
   };
 
-  // ─── Validar email ───
+
   const validarEmail = (email: string): boolean => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
 
-  // ─── Validar contraseña (mínimo 6 caracteres) ───
+  
   const validarPassword = (password: string): boolean => {
     return password.length >= 6;
   };
 
-  // ─── Validar formulario ───
   const validar = (): boolean => {
     const errs: Errores = {};
 
@@ -88,7 +87,7 @@ export default function Registro() {
     } else if (!validarEmail(form.email)) {
       errs.email = 'Email inválido.';
     } else {
-      // Verificar que el email no exista en empleados
+      
       const empleados = JSON.parse(localStorage.getItem('adonay_empleados') || '[]');
       if (empleados.some((e: Empleado) => e.email === form.email)) {
         errs.email = 'Este email ya está registrado.';
@@ -111,7 +110,7 @@ export default function Registro() {
     return Object.keys(errs).length === 0;
   };
 
-  // ─── Registrar empleado ───
+  
   const handleRegistro = (e: React.FormEvent) => {
     e.preventDefault();
     setErrores({});
@@ -122,33 +121,33 @@ export default function Registro() {
 
     setTimeout(() => {
       try {
-        // Obtener empleados existentes
+        
         const empleados: Empleado[] = JSON.parse(
           localStorage.getItem('adonay_empleados') || '[]'
         );
 
-        // Crear nuevo empleado
+        
         const nuevoEmpleado: Empleado = {
           id: Date.now().toString(),
           nombre: form.nombre,
           apellido: form.apellido,
           rut: form.rut,
           email: form.email,
-          telefono: '', // Se puede agregar después
+          telefono: '', 
           password: form.password, 
-          rol: 'empleado', // Por defecto, rol empleado
+          rol: 'empleado', 
           cargo: 'empleado',
           fechaIngreso: new Date().toISOString().split('T')[0],
           activo: true,
         };
 
-        // Guardar en localStorage
+        
         empleados.push(nuevoEmpleado);
         localStorage.setItem('adonay_empleados', JSON.stringify(empleados));
 
         setSuccess(true);
 
-        // Redirigir al login después de 2 segundos
+        
         setTimeout(() => {
           navigate('/login');
         }, 2000);
@@ -228,7 +227,7 @@ export default function Registro() {
   const nuevoRut = e.target.value;
   setForm({ ...form, rut: nuevoRut });
   
-  // Validación en tiempo real
+  
   if (nuevoRut.trim()) {
     if (!validarRUT(nuevoRut)) {
       setErrores(prev => ({ ...prev, rut: 'Formato: 12.345.678-9' }));

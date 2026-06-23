@@ -11,7 +11,7 @@ export interface Producto {
   nombre: string;
   precio: number;
   descripcion: string;
-  imagen: string; // base64 o URL
+  imagen: string; 
   categoria: string;
 }
 
@@ -21,7 +21,7 @@ export interface Sede {
   ubicacion: string;
   horario: string;
   numeroTelefonico: string;
-  imagen: string; // base64 o URL
+  imagen: string; 
 }
 
 // ─── Contexto de autenticación ───────────────────────────────────────────────
